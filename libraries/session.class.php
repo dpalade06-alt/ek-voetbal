@@ -4,8 +4,10 @@ class Session {
 
 	public static function Check()
 	{
-		$login_required = array("index.php", "users.php", "poules.php");
-		$admin_required = array("users.php", "poules.php");
+		global $user;
+
+		$login_required = array("index.php", "users.php", "poules.php", "user.php");
+		$admin_required = array("users.php", "poules.php", "user.php");
 
 		//check of de user is ingelogd.
 		foreach($login_required as $login)
@@ -25,15 +27,16 @@ class Session {
 			if(basename($_SERVER['SCRIPT_FILENAME']) != $admin)
 				continue;
 
-			if(!User::Logged())
-				continue;
-
 			if($user->data->admin)
 				continue;
 
-			Message::Send("error", "You're not allowed to view that page.", "login.php");
+			Message::Send("error", "You're not allowed to view that page.", "index.php");
 		}
 
+	}
+
+	public static function Process()
+	{
 		//check als de user uitgelogd wilt worden.
 		if(isset($_GET['logout']))
 		{
@@ -53,7 +56,6 @@ class Session {
 
 			Message::Send("error", "Your session has expired. Please login again.", "login.php");
 		}
-
 	}
 
 

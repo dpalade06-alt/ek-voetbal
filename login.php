@@ -20,7 +20,6 @@ if(isset($_POST['login']) && isset($_POST['username']) && isset($_POST['password
 
 ?>
 
-
 <div class="row">
 
 	<div class="col-md"></div>
