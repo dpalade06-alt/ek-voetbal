@@ -35,12 +35,16 @@ require('main.class.php');
 			        	<a class="nav-link" href="/">Home</a>
 			      	</li>
 
-			      	<li class="nav-item">
-			        	<a class="nav-link" href="users.php">Users</a>
-			      	</li>
-			      	<li class="nav-item">
-			        	<a class="nav-link" href="poules.php">Poules</a>
-			      	</li>
+			      	<?php if($user->data->admin) { ?>
+
+			      		<li class="nav-item">
+				        	<a class="nav-link" href="users.php">Users</a>
+				      	</li>
+				      	<li class="nav-item">
+				        	<a class="nav-link" href="poules.php">Poules</a>
+				      	</li>
+
+			      	<?php } ?>
 
 		      	<?php } ?>
 

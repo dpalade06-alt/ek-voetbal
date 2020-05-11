@@ -137,11 +137,15 @@ if(isset($_GET['unset']))
 
 					?>
 
+					<?php if($user->data->admin) { ?>
+
 					<hr>
 
 					<a href="?id=<?php echo $poule->id; ?>&unset"><button class="btn btn-warning">Unset</button></a>
 
-				<?php } else { ?>
+					<?php } ?>
+
+				<?php } else if($user->data->admin) { ?>
 
 					<form method="POST">
 
@@ -181,17 +185,21 @@ if(isset($_GET['unset']))
 
 				<?php } ?>
 
-				<hr>
+				<?php if($user->data->admin) { ?>
 
-				<form method="POST">
-
-					<h5>Add Users</h5>
-
-					<input type="text" placeholder="Username" name="username" class="form-control">
 					<hr>
-					<input type="submit" name="add" value="Add" class="btn btn-primary">
 
-				</form>
+					<form method="POST">
+
+						<h5>Add Users</h5>
+
+						<input type="text" placeholder="Username" name="username" class="form-control">
+						<hr>
+						<input type="submit" name="add" value="Add" class="btn btn-primary">
+
+					</form>
+
+				<?php } ?>
 
 			</div>
 
@@ -233,7 +241,11 @@ if(isset($_GET['unset']))
 						      	<td>
 						      		<a href="poule.php?id=<?php echo $u->id; ?>" target="_blank"><button class="btn btn-primary">View</button></a>
 
+						      		<?php if($user->data->admin) { ?>
+
 						      		<a href="?id=<?php echo $_GET['id']; ?>&delete=<?php echo $u->user_id; ?>"><button class="btn btn-danger">Delete</button></a>
+
+						      		<?php } ?>
 
 						      	</td>
 						    </tr>
