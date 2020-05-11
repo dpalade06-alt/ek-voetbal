@@ -69,9 +69,9 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 		  				<?php 
 
-		  					foreach($u as $i => $u_res)
+		  					foreach($r as $i => $r_res)
 		  					{
-		  						echo "<li>" . $u_res . " (Your bet: " . $r[$i] . ")</li>";
+		  						echo "<li>" . $r_res . " (Your bet: " . $u[$i] . ")</li>";
 		  					}
 
 
