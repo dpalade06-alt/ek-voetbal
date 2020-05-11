@@ -31,7 +31,7 @@ require('main.class.php');
 
 		      	<?php if(User::Logged()) { ?>
 
-		      		<li class="nav-item active">
+		      		<li class="nav-item">
 			        	<a class="nav-link" href="/">Home</a>
 			      	</li>
 

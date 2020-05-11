@@ -88,7 +88,7 @@ if(isset($_GET['delete']))
 						      	<td><?php echo $poule->title; ?></td>
 						      	<td><?php echo $poule->time; ?></td>
 						      	<td>
-						      		<a href="poule.php?id=<?php echo $poule->id; ?>" target="_blank"><button class="btn btn-primary">View</button></a>
+						      		<a href="poule.php?id=<?php echo $poule->id; ?>"><button class="btn btn-primary">View</button></a>
 
 						      		<a href="?delete=<?php echo $poule->id; ?>"><button class="btn btn-danger">Delete</button></a>
 

@@ -12,9 +12,12 @@ class User {
 		$query->bindParam(":username", $username);
 
 		if(!$query->execute())
-			return false;
+			return NULL;
 
-		return $query->rowCount();
+		if(!$query->rowCount())
+			return NULL;
+
+		return $query->fetch(PDO::FETCH_OBJ);
 	}
 
 	public static function Get($id)
@@ -28,6 +31,22 @@ class User {
 			return NULL;
 
 		return $query->fetch(PDO::FETCH_OBJ);
+	}
+
+	public static function GetUsername($id)
+	{
+		global $db;
+
+		$query = $db->prepare("SELECT `username` FROM `users` WHERE `id` = :id");
+		$query->bindParam(":id", $id);
+
+		if(!$query->execute())
+			return "N/A";
+
+		if(!$query->rowCount())
+			return "N/A";
+
+		return $query->fetch(PDO::FETCH_OBJ)->username;
 	}
 
 	public static function GetAll()

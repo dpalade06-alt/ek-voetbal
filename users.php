@@ -96,7 +96,7 @@ if(isset($_GET['delete']))
 						      	<td><?php echo $user->admin ? "Yes" : "No"; ?></td>
 						      	<td><?php echo $user->registered; ?></td>
 						      	<td>
-						      		<a href="user.php?id=<?php echo $user->id; ?>" target="_blank"><button class="btn btn-primary">Edit</button></a>
+						      		<a href="user.php?id=<?php echo $user->id; ?>"><button class="btn btn-primary">Edit</button></a>
 
 						      		<a href="?delete=<?php echo $user->id; ?>"><button class="btn btn-danger">Delete</button></a>
 
