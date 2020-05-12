@@ -6,6 +6,13 @@ $(document).ready(function() {
         $dropdown.append($("<option />").val(val).text(val));
     });
 
+    $('#poule_table').DataTable({
+        "order": [[ 1, "desc" ]]
+    });
+
+    $('#users_table').DataTable();
+    $("#poules_table").DataTable();
+
 });
 
 const contries = {

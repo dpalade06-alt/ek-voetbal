@@ -205,6 +205,13 @@ class Poule {
 		$query->bindParam(":id", $user_id);
 		$query->bindParam(":p_id", $poule_id);
 
+		if(!$query->execute())
+			return false;
+
+		$query = $db->prepare("DELETE FROM `user_bets` WHERE `user_id` = :id AND `poule_id` = :p_id");
+		$query->bindParam(":id", $user_id);
+		$query->bindParam(":p_id", $poule_id);
+
 		return $query->execute();
 	}
 

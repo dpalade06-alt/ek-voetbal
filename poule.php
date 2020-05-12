@@ -216,10 +216,13 @@ if(isset($_GET['unset']))
 			</div>
 			<div class="card-body">
 
-				<table class="table table-bordered">
+				The results are ordered by the number of points in descending order. (highest to lowest)
+
+				<hr>
+
+				<table id="poule_table" class="table table-bordered">
 				  	<thead>
 					    <tr>
-					      	<th scope="col">#</th>
 					      	<th scope="col">Username</th>
 					      	<th scope="col">Points</th>
 					      	<th scope="col">Added Date</th>
@@ -231,7 +234,6 @@ if(isset($_GET['unset']))
 				  		<?php foreach(Poule::GetAllUsers($_GET['id']) as $u) { ?>
 
 						    <tr>
-						      	<th scope="row"><?php echo $u->id; ?></th>
 						      	<td><?php echo User::GetUsername($u->user_id); ?></td>
 						      	<td>
 						      		<?php echo $poule->results ? Poule::GetPointsFromResult($poule->results, Poule::GetUserBet($user->data->id, $poule->id)) : "N/A"; ?>
@@ -239,7 +241,15 @@ if(isset($_GET['unset']))
 						      	</td>
 						      	<td><?php echo $u->time; ?></td>
 						      	<td>
-						      		<a href="poule.php?id=<?php echo $u->id; ?>" target="_blank"><button class="btn btn-primary">View</button></a>
+						      		<?php if($poule->results) { ?>
+
+						      			<button class="btn btn-primary" onclick="view_bets('<?php echo $u->user_id; ?>', '<?php echo $_GET['id']; ?>');">View</button>
+
+						      		<?php } else { ?>
+
+						      			<button class="btn btn-primary" disabled>View</button>
+
+						      		<?php } ?>
 
 						      		<?php if($user->data->admin) { ?>
 
@@ -261,6 +271,52 @@ if(isset($_GET['unset']))
 	</div>
 
 </div>
+
+<div class="modal fade" id="betsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  	<div class="modal-dialog" role="document">
+    	<div class="modal-content">
+      		<div class="modal-header">
+        		<h5 class="modal-title" id="exampleModalLabel">Bets</h5>
+        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          		<span aria-hidden="true">&times;</span>
+        	</button>
+  		</div>
+      	<div class="modal-body">
+        	
+      		<div id="bets"></div>
+
+      	</div>
+      	<div class="modal-footer">
+        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      	</div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+	
+	function view_bets(id, p_id)
+	{
+
+		$.ajax({
+		    url: 'api.php',
+		    type: 'POST',
+		    data: jQuery.param({ user_id: id, poule_id: p_id }) ,
+		    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+		    success: function (response) 
+		    {
+		        $("#bets").html(response);
+		        $("#betsModal").modal('show');
+		    },
+		    error: function () {
+		        console.log("[ERROR] Could not process request.");
+		    }
+		}); 
+
+	}
+
+</script>
 
 
 <?php require('libraries/footer.class.php'); ?>

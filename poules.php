@@ -70,7 +70,7 @@ if(isset($_GET['delete']))
 			</div>
 			<div class="card-body">
 
-				<table class="table table-bordered">
+				<table id="poules_table" class="table table-bordered">
 				  	<thead>
 					    <tr>
 					      	<th scope="col">#</th>

@@ -24,9 +24,14 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 		Message::Send("error", "You have already bet on this poule.", "index.php");
 	}
 
-	$data = $_POST['option_1'] . "|" . $_POST['option_2'] . "|" . $_POST['option_3'] . "|" . $_POST['option_4'];
+	$data = array($_POST['option_1'], $_POST['option_2'], $_POST['option_3'], $_POST['option_4']);
 
-	if(!Poule::AddBet($user->data->id, $_POST['poule_id'], $data))
+	if(count(array_keys($data, $_POST['option_1'])) > 1 || count(array_keys($data, $_POST['option_2'])) > 1 || count(array_keys($data, $_POST['option_3'])) > 1 || count(array_keys($data, $_POST['option_4'])) > 1)
+	{
+		Message::Send("error", "You can't select the same team more than once.", "index.php");
+	}
+
+	if(!Poule::AddBet($user->data->id, $_POST['poule_id'], implode("|", $data)))
 	{
 		Message::Send("error", "Could not save bet. Please try again later.", "index.php");
 	}
@@ -71,7 +76,8 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 		  					foreach($r as $i => $r_res)
 		  					{
-		  						echo "<li>" . $r_res . " (Your bet: " . $u[$i] . ")</li>";
+		  						echo "<li>" . $r_res . " (Your bet: " . $u[$i] . ") " . ($r_res == $u[$i] ? "<i class='fas fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>") . "</li>";
+
 		  					}
 
 
@@ -104,7 +110,7 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 		  					echo "<ol>";
 
-		  					foreach($u as $i => $u_res)
+		  					foreach($r as $i => $u_res)
 		  					{
 		  						echo "<li>" . $u_res . "</li>";
 		  					}
