@@ -14,9 +14,9 @@ if(!$data = User::Get($_GET['id']))
 	Message::Send("error", "That account does not exist.", "users.php");
 }
 
-if(isset($_POST['save']) && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['admin']))
+if(isset($_POST['save']) && isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['admin']))
 {
-	if(!User::Update($_GET['id'], $_POST['username'], $_POST['admin'], $_POST['password']))
+	if(!User::Update($_GET['id'], strip_tags($_POST['username']), strip_tags($_POST['email']), $_POST['admin'], $_POST['password']))
 	{
 		Message::Send("error", "Could not update account, please try again later.", "users.php");
 	}
@@ -36,7 +36,7 @@ if(isset($_POST['save']) && isset($_POST['username']) && isset($_POST['password'
 
 			<div class="card-header">
 
-				<?php echo $data->username . "'s Details"; ?>
+				<?php echo htmlentities($data->username) . "'s Details"; ?>
 
 			</div>
 
@@ -44,7 +44,8 @@ if(isset($_POST['save']) && isset($_POST['username']) && isset($_POST['password'
 
 				<form method="POST">
 
-					<input type="text" placeholder="Username" name="username" value="<?php echo $data->username; ?>" class="form-control"><br>
+					<input type="text" placeholder="Username" name="username" value="<?php echo htmlentities($data->username); ?>" class="form-control"><br>
+					<input type="text" placeholder="E-mail" name="email" value="<?php echo htmlentities($data->email); ?>" class="form-control"><br>
 					<input type="password" placeholder="Password" name="password" class="form-control"><br>
 					<input type="text" placeholder="Admin" name="admin" value="<?php echo $data->admin; ?>" class="form-control">
 

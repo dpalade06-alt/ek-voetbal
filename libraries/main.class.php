@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 require('constants.class.php');
 require('messages.class.php');
 require('csrf.class.php');
+require('mail.class.php');
 require('db.class.php');
 require('user.class.php');
 require('poule.class.php');

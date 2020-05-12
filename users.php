@@ -2,11 +2,16 @@
 
 require('libraries/header.class.php');
 
-if(isset($_POST['add']) && isset($_POST['username']) && isset($_POST['password']))
+if(isset($_POST['add']) && isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password']))
 {
 	if(empty($_POST['username']))
 	{
 		Message::Send("error", "You must specify a username.", "users.php");
+	}
+
+	if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+	{
+		Message::Send("error", "You must enter a valid email.", "users.php");
 	}
 
 	if(User::Exists(strip_tags($_POST['username'])))
@@ -14,10 +19,23 @@ if(isset($_POST['add']) && isset($_POST['username']) && isset($_POST['password']
 		Message::Send("error", "Username is already in use.", "users.php");
 	}
 
-	if(!User::Register(strip_tags($_POST['username']), $_POST['password']))
+	if(!User::Register(strip_tags($_POST['username']), $_POST['password'], strip_tags($_POST['email'])))
 	{
 		Message::Send("error", "Could not create account. Please try again.", "users.php");
 	}
+
+	//send mail
+	Mail::Send(
+		strip_tags($_POST['email']), 
+		"Your account is ready!", 
+		"<h4>Poules4ALL account</h4>
+		<br><br>
+		You have been invited to join Poules4ALL! Use the credentials below to login.
+		<br><br>
+		Username: " . strip_tags($_POST['username']) . "
+		<br>
+		Password: " . strip_tags($_POST['password']) . "
+	");
 
 	Message::Send("success", "Account has been created.", "users.php");
 }
@@ -59,6 +77,7 @@ if(isset($_GET['delete']))
 				<form method="POST">
 
 					<input type="text" class="form-control" placeholder="Username" name="username"><br>
+					<input type="text" class="form-control" placeholder="Email" name="email"><br>
 					<input type="password" class="form-control" placeholder="Password" name="password">
 
 					<?php CSRF::Show(); ?>
@@ -89,6 +108,7 @@ if(isset($_GET['delete']))
 					      	<th scope="col">#</th>
 					      	<th scope="col">Username</th>
 					      	<th scope="col">Admin</th>
+					      	<th scope="col">E-mail</th>
 					      	<th scope="col">Registration Date</th>
 					      	<th scope="col">Edit</th>
 					    </tr>
@@ -99,8 +119,9 @@ if(isset($_GET['delete']))
 
 						    <tr>
 						      	<th scope="row"><?php echo $user->id; ?></th>
-						      	<td><?php echo $user->username; ?></td>
+						      	<td><?php echo htmlentities($user->username); ?></td>
 						      	<td><?php echo $user->admin ? "Yes" : "No"; ?></td>
+						      	<td><?php echo htmlentities($user->email); ?></td>
 						      	<td><?php echo $user->registered; ?></td>
 						      	<td>
 						      		<a href="user.php?id=<?php echo $user->id; ?>"><button class="btn btn-primary">Edit</button></a>

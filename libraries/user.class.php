@@ -61,7 +61,7 @@ class User {
 		return $query->fetchAll(PDO::FETCH_OBJ);
 	}
 
-	public static function Update($id, $username, $admin, $password = "")
+	public static function Update($id, $username, $email, $admin, $password = "")
 	{
 		global $db;
 
@@ -70,8 +70,9 @@ class User {
 		//als er geen wachtwoord word opgegeven, sla alleen de overige details op.
 		if(empty($_POST['password']))
 		{
-			$query = $db->prepare("UPDATE `users` SET `username` = :username, `admin` = :admin WHERE `id` = :id");
+			$query = $db->prepare("UPDATE `users` SET `username` = :username, `email` = :email, `admin` = :admin WHERE `id` = :id");
 			$query->bindParam(":username", $username);
+			$query->bindParam(":email", $email);
 			$query->bindParam(":admin", $admin);
 			$query->bindParam(":id", $id);
 		}
@@ -79,8 +80,9 @@ class User {
 		{
 			$password = sha1($_POST['password']);
 
-			$query = $db->prepare("UPDATE `users` SET `username` = :username, `password` = :password, `admin` = :admin WHERE `id` = :id");
+			$query = $db->prepare("UPDATE `users` SET `username` = :username, `email` = :email, `password` = :password, `admin` = :admin WHERE `id` = :id");
 			$query->bindParam(":username", $username);
+			$query->bindParam(":email", $email);
 			$query->bindParam(":password", $password);
 			$query->bindParam(":admin", $admin);
 			$query->bindParam(":id", $id);
@@ -115,15 +117,16 @@ class User {
 
 	}
 
-	public static function Register($username, $password)
+	public static function Register($username, $password, $email)
 	{
 		global $db;
 
 		$password = sha1($password);
 
-		$query = $db->prepare("INSERT INTO `users` (`username`, `password`) VALUES (:username, :password)");
+		$query = $db->prepare("INSERT INTO `users` (`username`, `password`, `email`) VALUES (:username, :password, :email)");
 		$query->bindParam(":username", $username);
 		$query->bindParam(":password", $password);
+		$query->bindParam(":email", $email);
 
 		return $query->execute();
 	}
