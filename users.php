@@ -76,7 +76,24 @@ if(isset($_GET['delete']))
 
 					<input type="text" class="form-control" placeholder="Username" name="username"><br>
 					<input type="text" class="form-control" placeholder="Email" name="email"><br>
-					<input type="password" class="form-control" placeholder="Password" name="password">
+
+					<div class="form-row">
+
+						<div class="col-md">
+
+							<input id="password" type="password" class="form-control" placeholder="Password" name="password">
+
+						</div>
+						<div class="col-md">
+
+							<button type="button" class="btn btn-primary" href="#" onclick="toggle_password();">Show</button>
+
+							<button type="button" class="btn btn-warning" href="#" onclick="generate_password();">Generate</button>
+
+						</div>
+
+					</div>
+
 
 					<?php CSRF::Show(); ?>
 
@@ -140,6 +157,35 @@ if(isset($_GET['delete']))
 	</div>
 
 </div>
+
+<script>
+
+	function toggle_password()
+	{
+		if($("#password").attr('type') == "password")
+		{
+			$("#password").attr('type', 'text');
+		}
+		else
+		{
+			$("#password").attr('type', 'password');
+		}
+	}
+
+	function generate_password()
+	{
+		var alphabet = "abcdefghijklmnopqrstuvwxyz1234567890";
+		var str = "";
+
+		for(var i = 0; i < 10; i++)
+		{
+			str += alphabet[Math.floor(Math.random() * (alphabet.length - 1))];
+		}
+
+		$("#password").val(str);
+	}
+
+</script>
 
 
 <?php require('libraries/footer.class.php'); ?>
