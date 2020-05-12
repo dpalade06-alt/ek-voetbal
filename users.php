@@ -77,14 +77,14 @@ if(isset($_GET['delete']))
 					<input type="text" class="form-control" placeholder="Username" name="username"><br>
 					<input type="text" class="form-control" placeholder="Email" name="email"><br>
 
-					<div class="form-row">
+					<div class="row">
 
-						<div class="col-md">
+						<div class="col">
 
 							<input id="password" type="password" class="form-control" placeholder="Password" name="password">
 
 						</div>
-						<div class="col-md">
+						<div class="col">
 
 							<button type="button" class="btn btn-primary" href="#" onclick="toggle_password();">Show</button>
 
@@ -106,6 +106,8 @@ if(isset($_GET['delete']))
 			</div>
 
 		</div>
+
+		<br>
 
 	</div>
 

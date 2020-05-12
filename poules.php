@@ -64,6 +64,8 @@ if(isset($_GET['delete']))
 
 		</div>
 
+		<br>
+
 	</div>
 
 	<div class="col-md">

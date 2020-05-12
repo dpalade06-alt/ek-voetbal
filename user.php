@@ -62,6 +62,8 @@ if(isset($_POST['save']) && isset($_POST['username']) && isset($_POST['email']) 
 
 		</div>
 
+		<br>
+
 	</div>
 
 	<div class="col-md"></div>
