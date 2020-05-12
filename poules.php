@@ -9,19 +9,21 @@ if(isset($_POST['add']) && isset($_POST['title']))
 		Message::Send("error", "You must specify a valid title.", "poules.php");
 	}
 
-	if(!Poule::Create(strip_tags($_POST['title'])))
+	$id = 0;
+
+	if(!$id = Poule::Create(strip_tags($_POST['title'])))
 	{
 		Message::Send("error", "Could not create poule. Please try again.", "poules.php");
 	}
 
-	Message::Send("success", "Poule has been created.", "poules.php");
+	Message::Send("success", "Poule has been created.", "poule.php?id=" . $id);
 }
 
 if(isset($_GET['delete']))
 {
 	if(!Poule::Get($_GET['delete'] ))
 	{
-		Message::Send("error", "That poule does not exist.", "poules.php");
+		Message::Send("error", "That poule does not exist.", "poules.php");	
 	}
 
 	if(!Poule::Delete($_GET['delete']))

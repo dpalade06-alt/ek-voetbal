@@ -26,18 +26,14 @@ require('main.class.php');
 	    <title>Poules4ALL | Home</title>
   	</head>
   	<body>
-  	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  	<a class="navbar-brand" href="#">Navbar</a>
-	  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-	    	<span class="navbar-toggler-icon"></span>
-	  	</button>
-	  	<div class="collapse navbar-collapse">
-		    <ul class="navbar-nav">
-
-		      	<?php if(User::Logged()) { ?>
+  	<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #58c30a;">
+	    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+	        <ul class="navbar-nav mr-auto">
+	            
+	        	<?php if(User::Logged()) { ?>
 
 		      		<li class="nav-item">
-			        	<a class="nav-link" href="/">Home</a>
+			        	<a class="nav-link" href="index.php">Home</a>
 			      	</li>
 
 			      	<?php if($user->data->admin) { ?>
@@ -53,8 +49,30 @@ require('main.class.php');
 
 		      	<?php } ?>
 
-		    </ul>
-	  	</div>
+	        </ul>
+	    </div>
+	    <div class="mx-auto order-0">
+	        <a class="navbar-brand mx-auto" href="#">Poules4ALL</a>
+	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	    </div>
+	    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+	        <ul class="navbar-nav ml-auto">
+	            <?php if(User::Logged()) { ?>
+
+	            	<li class="nav-item dropdown">
+				        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				          	<?php echo $user->data->username; ?>
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				          	<a class="dropdown-item" href="?logout">Logout</a>
+				        </div>
+				    </li>
+
+	            <?php } ?>
+	        </ul>
+	    </div>
 	</nav>
 
 	<div class="container-fluid">

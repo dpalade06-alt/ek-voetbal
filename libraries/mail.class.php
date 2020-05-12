@@ -4,12 +4,15 @@ class Mail {
 
 	public static function Send($to, $subject, $message)
 	{
-		$header = "From:" . SENDER_EMAIL . " \r\n";
-		$header .= "Cc:" . SENDER_EMAIL . " \r\n";
-		$header .= "MIME-Version: 1.0\r\n";
-		$header .= "Content-type: text/html\r\n";
+		$headers = 'From: ' . SENDER_EMAIL . "\r\n" .
+		    'Reply-To: ' . SENDER_EMAIL . "\r\n" .
+		    'X-Mailer: PHP/' . phpversion() . 
+		    'MIME-Version: 1.0' . "\r\n" .
+		    'Content-type: text/html' . "\r\n";
 
-		return mail($to, $subject, $message, $header);
+		$status = mail($to, $subject, $message, $headers);
+		
+		return $status;
 	}
 
 }

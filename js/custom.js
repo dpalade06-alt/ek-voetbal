@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-    var $dropdown = $(".dropdown");
+    var $vote_dd = $(".vote_dd");
 
     $.each(contries, function(i, val) {
-        $dropdown.append($("<option />").val(val).text(val));
+        $vote_dd.append($("<option />").val(val).text(val));
     });
 
     $('#poule_table').DataTable({

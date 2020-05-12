@@ -26,6 +26,10 @@ require('session.class.php');
 Session::Process();
 Session::Check();
 
-//check de csrf.
-CSRF::Verify();
-CSRF::Generate();
+//check csrf voor alle pagina's behalve api.php
+if(basename($_SERVER['SCRIPT_FILENAME']) != "api.php")
+{
+	//check de csrf.
+	CSRF::Verify();
+	CSRF::Generate();
+}

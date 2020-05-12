@@ -14,7 +14,12 @@ if(!$poule = Poule::Get($_GET['id']))
 	Message::Send("error", "That poule does not exist.", "poules.php");
 }
 
-if(isset($_POST['add']) && isset($_POST['username']))
+if(!Poule::HasUser($_GET['id'], $user->data->id) && !$user->data->admin)
+{
+	Message::Send("error", "You were not invited to this poule.", "index.php");
+}
+
+if(isset($_POST['add']) && isset($_POST['username']) && $user->data->admin)
 {
 	if(empty($_POST['username']))
 	{
@@ -41,7 +46,7 @@ if(isset($_POST['add']) && isset($_POST['username']))
 	Message::Send("success", "User has been added to poule.", "poule.php?id=".$_GET['id']);
 }
 
-if(isset($_GET['delete']))
+if(isset($_GET['delete']) && $user->data->admin)
 {
 	if(!Poule::HasUser($_GET['id'], $_GET['delete']))
 	{
@@ -56,7 +61,7 @@ if(isset($_GET['delete']))
 	Message::Send("success", "Poule member has been deleted.", "poule.php?id=".$_GET['id']);
 }
 
-if(isset($_POST['save']) && isset($_POST['option_1']) && isset($_POST['option_2']) && isset($_POST['option_3']))
+if(isset($_POST['save']) && isset($_POST['option_1']) && isset($_POST['option_2']) && isset($_POST['option_3']) && isset($_POST['option_4']) && $user->data->admin)
 {
 	if(empty($_POST['option_1']) || empty($_POST['option_2']) || empty($_POST['option_3']) || empty($_POST['option_4']))
 	{
@@ -65,21 +70,77 @@ if(isset($_POST['save']) && isset($_POST['option_1']) && isset($_POST['option_2'
 
 	if(!Poule::Get($_GET['id']))
 	{
-		Message::Send("error", "That poule does not exist.", "index.php");
+		Message::Send("error", "That poule does not exist.", "poule.php?id=".$_GET['id']);
 	}
 
-	$data = $_POST['option_1'] . "|" . $_POST['option_2'] . "|" . $_POST['option_3'] . "|" . $_POST['option_4'];
+	if(!in_array($_POST['option_1'], $countries) || !in_array($_POST['option_2'], $countries) || !in_array($_POST['option_3'], $countries) || !in_array($_POST['option_4'], $countries))
+	{
+		echo (int)in_array($_POST['option_1'], $countries) . " - " . (int)in_array($_POST['option_2'], $countries) . " - " . (int)in_array($_POST['option_3'], $countries) . " - " . (int)in_array($_POST['option_4'], $countries);
+		die();
+		Message::Send("error", "That country does not exist.", "poule.php?id=".$_GET['id']);
+	}
 
-	if(!Poule::SetResult($_GET['id'], $data))
+	$data = array($_POST['option_1'], $_POST['option_2'], $_POST['option_3'], $_POST['option_4']);
+
+	if(count(array_keys($data, $_POST['option_1'])) > 1 || count(array_keys($data, $_POST['option_2'])) > 1 || count(array_keys($data, $_POST['option_3'])) > 1 || count(array_keys($data, $_POST['option_4'])) > 1)
+	{
+		Message::Send("error", "You can't select the same team more than once.", "poule.php?id=".$_GET['id']);
+	}
+
+	if(!Poule::SetResult($_GET['id'], implode("|", $data)))
 	{
 		Message::Send("error", "Could not save results. Please try again later.", "poule.php?id=".$_GET['id']);
+	}
+
+	//verstuur alle emails
+	foreach(Poule::GetAllUsersWithBets($poule->id) as $u)
+	{
+		//haal de user op
+		$user = User::Get($u->user_id);
+
+		//user bestaat niet meer
+		if($user == NULL)
+			continue;
+
+		//haal bet op
+		$user_bet = Poule::GetUserBet($user->id, $poule->id);
+
+		$bet = explode("|", $user_bet);
+
+		$bet_string = "";
+
+		foreach($data as $i => $r)
+		{
+			if($r == $bet[$i])
+			{
+				$bet_string .= "<li style='color: green;'>" . $r . " (Your bet: " . $bet[$i] . ")</li>";
+			}
+			else
+			{
+				$bet_string .= "<li style='color: red;'>" . $r . " (Your bet: " . $bet[$i] . ")</li>";
+			}
+		}
+
+		//stuur
+		Mail::Send(
+			strip_tags($user->email), 
+			"Poules4ALL - Your results are in! (Poule #" . $poule->id . ")", 
+			"<h3>Poules4ALL results</h3>
+			<h4>An administrator has just submitted the results. Here are yours:</h4>
+
+			<ol>
+			" . $bet_string . "
+			</ol>
+
+			Total points: " . Poule::GetPointsFromResult(implode("|", $data), $user_bet) . "
+		");
 	}
 
 	Message::Send("success", "Results have been saved.", "poule.php?id=".$_GET['id']);
 }
 
 
-if(isset($_GET['unset']))
+if(isset($_GET['unset']) && $user->data->admin)
 {
 	if(!Poule::Get($_GET['id']))
 	{
@@ -118,9 +179,9 @@ if(isset($_GET['unset']))
 
 				<hr>
 
-				<?php if($poule->results != NULL) { ?>
+				<h5>Results</h5>
 
-					<h5>Results</h5>
+				<?php if($poule->results != NULL) { ?>
 
 					<?php 
 
@@ -152,28 +213,28 @@ if(isset($_GET['unset']))
 			    		<div class="row m-3">
 			    			<div clas="col-md">#1</div>
 			    			<div class="col-md">
-			    				<select name="option_1" class="dropdown form-control"></select>
+			    				<select name="option_1" class="vote_dd form-control"></select>
 			    			</div>
 			    		</div>
 
 			    		<div class="row m-3">
 			    			<div clas="col-md">#2</div>
 			    			<div class="col-md">
-			    				<select name="option_2" class="dropdown form-control"></select>
+			    				<select name="option_2" class="vote_dd form-control"></select>
 			    			</div>
 			    		</div>
 
 			    		<div class="row m-3">
 			    			<div clas="col-md">#3</div>
 			    			<div class="col-md">
-			    				<select name="option_3" class="dropdown form-control"></select>
+			    				<select name="option_3" class="vote_dd form-control"></select>
 			    			</div>
 			    		</div>
 
 			    		<div class="row m-3">
 			    			<div clas="col-md">#4</div>
 			    			<div class="col-md">
-			    				<select name="option_4" class="dropdown form-control"></select>
+			    				<select name="option_4" class="vote_dd form-control"></select>
 			    			</div>
 			    		</div>
 
@@ -184,6 +245,10 @@ if(isset($_GET['unset']))
 			    		<input type="submit" class="btn btn-primary" value="Save" name="save">
 
 			    	</form>
+
+				<?php } else { ?>
+
+					Not available yet.
 
 				<?php } ?>
 
@@ -241,7 +306,8 @@ if(isset($_GET['unset']))
 						    <tr>
 						      	<td><?php echo User::GetUsername($u->user_id); ?></td>
 						      	<td>
-						      		<?php echo $poule->results ? Poule::GetPointsFromResult($poule->results, Poule::GetUserBet($user->data->id, $poule->id)) : "N/A"; ?>
+
+						      		<?php echo $poule->results ? Poule::GetPointsFromResult($poule->results, Poule::GetUserBet($u->user_id, $poule->id)) : "N/A"; ?>
 
 						      	</td>
 						      	<td><?php echo $u->time; ?></td>

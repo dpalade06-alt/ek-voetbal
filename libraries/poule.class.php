@@ -17,6 +17,9 @@ class Poule {
 
 	public static function GetPointsFromResult($result, $user_value)
 	{
+		if($result == NULL || $user_value == NULL)
+			return 0;
+
 		$r = explode("|", $result);
 		$u = explode("|", $user_value);
 
@@ -182,6 +185,19 @@ class Poule {
 		global $db;
 
 		$query = $db->query("SELECT * FROM `poules`");
+
+		if(!$query->execute())
+			return NULL;
+
+		return $query->fetchAll(PDO::FETCH_OBJ);
+	}
+
+	public static function GetAllUsersWithBets($poule_id)
+	{
+		global $db;
+
+		$query = $db->prepare("SELECT * FROM `user_bets` WHERE `poule_id` = :id");
+		$query->bindParam(":id", $poule_id);
 
 		if(!$query->execute())
 			return NULL;

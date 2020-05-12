@@ -48,7 +48,7 @@ class Session {
 		}
 
 		//log de user uit als er een verandering is in het ip
-		if($_SESSION['ip'] != $_SERVER['REMOTE_ADDR'])
+		if(isset($_SESSION['ip']) && $_SESSION['ip'] != $_SERVER['REMOTE_ADDR'])
 		{
 			unset($_SESSION['username']);
 			unset($_SESSION['password']);

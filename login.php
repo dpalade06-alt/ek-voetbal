@@ -14,7 +14,7 @@ if(isset($_POST['login']) && isset($_POST['username']) && isset($_POST['password
 		Message::Send("error", "Invalid credentials specified.", "login.php");
 	}
 
-	Message::Send("success", "You have been logged in.");
+	Message::Send("success", "You have been logged in.", "index.php");
 
 }
 

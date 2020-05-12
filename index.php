@@ -51,7 +51,7 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 <?php foreach(Poule::GetPoulesForUser($user->data->id) as $poule) { ?>
 
-	<div class="col-md-3">
+	<div class="col-md-4">
 
 		<div class="card">
 		  	<div class="card-header">
@@ -136,28 +136,28 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 				    		<div class="row m-3">
 				    			<div clas="col-md">#1</div>
 				    			<div class="col-md">
-				    				<select name="option_1" class="dropdown form-control"></select>
+				    				<select name="option_1" class="vote_dd form-control"></select>
 				    			</div>
 				    		</div>
 
 				    		<div class="row m-3">
 				    			<div clas="col-md">#2</div>
 				    			<div class="col-md">
-				    				<select name="option_2" class="dropdown form-control"></select>
+				    				<select name="option_2" class="vote_dd form-control"></select>
 				    			</div>
 				    		</div>
 
 				    		<div class="row m-3">
 				    			<div clas="col-md">#3</div>
 				    			<div class="col-md">
-				    				<select name="option_3" class="dropdown form-control"></select>
+				    				<select name="option_3" class="vote_dd form-control"></select>
 				    			</div>
 				    		</div>
 
 				    		<div class="row m-3">
 				    			<div clas="col-md">#4</div>
 				    			<div class="col-md">
-				    				<select name="option_4" class="dropdown form-control"></select>
+				    				<select name="option_4" class="vote_dd form-control"></select>
 				    			</div>
 				    		</div>
 
@@ -175,7 +175,7 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 		  	</div>
 		  	<div class="card-footer text-muted">
-		    	<?php echo $poule->time; ?>
+		    	Created at <?php echo $poule->time; ?>
 		  	</div>
 		</div>
 

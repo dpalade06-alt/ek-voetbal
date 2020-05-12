@@ -27,11 +27,9 @@ if(isset($_POST['add']) && isset($_POST['username']) && isset($_POST['email']) &
 	//send mail
 	Mail::Send(
 		strip_tags($_POST['email']), 
-		"Your account is ready!", 
-		"<h4>Poules4ALL account</h4>
-		<br><br>
-		You have been invited to join Poules4ALL! Use the credentials below to login.
-		<br><br>
+		"Poules4ALL - Your account is ready!", 
+		"<h3>Poules4ALL account</h3>
+		<h4>You have been invited to join Poules4ALL! Use the credentials below to login.</h4>
 		Username: " . strip_tags($_POST['username']) . "
 		<br>
 		Password: " . strip_tags($_POST['password']) . "
