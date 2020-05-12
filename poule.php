@@ -117,7 +117,14 @@ if(isset($_POST['save']) && isset($_POST['option_1']) && isset($_POST['option_2'
 			}
 			else
 			{
-				$bet_string .= "<li style='color: red;'>" . $r . " (Your bet: " . $bet[$i] . ")</li>";
+				if(in_array($bet[$i], $data))
+				{
+					$bet_string .= "<li style='color: orange;'>" . $r . " (Your bet: " . $bet[$i] . ")</li>";
+				}
+				else
+				{
+					$bet_string .= "<li style='color: red;'>" . $r . " (Your bet: " . $bet[$i] . ")</li>";
+				}
 			}
 		}
 

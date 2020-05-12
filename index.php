@@ -49,7 +49,11 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 <div class="row">
 
+<?php $total = 0; ?>
+
 <?php foreach(Poule::GetPoulesForUser($user->data->id) as $poule) { ?>
+
+	<?php $total ++; ?>
 
 	<div class="col-md-4">
 
@@ -79,11 +83,26 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 		  				<?php 
 
-		  					foreach($r as $i => $r_res)
-		  					{
-		  						echo "<li>" . $r_res . " (Your bet: " . $u[$i] . ") " . ($r_res == $u[$i] ? "<i class='fas fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>") . "</li>";
 
-		  					}
+							foreach($r as $i => $r_res)
+							{
+								if($r_res == $u[$i])
+								{
+									echo "<li>" . $u[$i] . " <i class='fas fa-check text-success'></i></li>";
+								}
+								else
+								{
+									if(in_array($u[$i], $r))
+									{
+										echo "<li>" . $u[$i] . " <i class='fas fa-exclamation-triangle text-warning'></i></li>";
+									}
+									else
+									{
+										echo "<li>" . $u[$i] . " <i class='fas fa-times text-danger'></i></li>";
+									}
+								}
+
+							}
 
 
 		  				?>
@@ -180,6 +199,16 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 		</div>
 
 		<br>
+
+	</div>
+
+<?php } ?>
+
+<?php if($total == 0) { ?>
+
+	<div class="col-md">
+
+		There are no poules available at the moment.
 
 	</div>
 

@@ -34,7 +34,21 @@ if($user_bet)
 
 	foreach($r as $i => $r_res)
 	{
-		echo "<li>" . $u[$i] . " " . ($r_res == $u[$i] ? "<i class='fas fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>") . "</li>";
+		if($r_res == $u[$i])
+		{
+			echo "<li>" . $u[$i] . " <i class='fas fa-check text-success'></i></li>";
+		}
+		else
+		{
+			if(in_array($u[$i], $r))
+			{
+				echo "<li>" . $u[$i] . " <i class='fas fa-exclamation-triangle text-warning'></i></li>";
+			}
+			else
+			{
+				echo "<li>" . $u[$i] . " <i class='fas fa-times text-danger'></i></li>";
+			}
+		}
 
 	}
 
