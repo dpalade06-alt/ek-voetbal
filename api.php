@@ -2,24 +2,30 @@
 
 require('libraries/main.class.php');
 
+//laat alleen de eigen domein door.
 header("Access-Control-Allow-Origin: 76431.ict-lab.nl");
 
+//als het geen post request is, weiger het.
 if($_SERVER['REQUEST_METHOD'] != "POST")
 {
 	die(json_encode(array("success" => false, "message" => "Invalid request method used.")));
 }
 
+//check als alle parameters mee gestuurd zijn.
 if(!isset($_POST['user_id']) || !isset($_POST['poule_id']))
 {
 	die(json_encode(array("success" => false, "message" => "Invalid parameters specified.")));
 }
 
+//haal de bet & de resultaat op.
 $poule = Poule::Get($_POST['poule_id']);
 $user_bet = Poule::GetUserBet($_POST['user_id'], $_POST['poule_id']);
 
+//split de resultaat naar array.
 $u = explode("|", $user_bet);
 $r = explode("|", $poule->results);
 
+//display de content
 echo "<h5>His bet:</h5>";
 
 echo "<ol>";

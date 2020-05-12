@@ -47,6 +47,16 @@ class Session {
 			Message::Send("success", "You have been logged out.", "login.php");
 		}
 
+		//log de user uit als er een verandering is in het ip
+		if($_SESSION['ip'] != $_SERVER['REMOTE_ADDR'])
+		{
+			unset($_SESSION['username']);
+			unset($_SESSION['password']);
+			unset($_SESSION['ip']);
+
+			Message::Send("error", "Your session has expired. Please login again.", "login.php");
+		}
+
 		//check voor wachtwoord veranderingen. (als de username / wachtwoord veranderd is, dan wordt je automatisch uitgelogd)
 		if(User::Logged() && !User::Check($_SESSION['username'], $_SESSION['password']))
 		{

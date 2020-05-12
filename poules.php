@@ -9,7 +9,7 @@ if(isset($_POST['add']) && isset($_POST['title']))
 		Message::Send("error", "You must specify a valid title.", "poules.php");
 	}
 
-	if(!Poule::Create($_POST['title']))
+	if(!Poule::Create(strip_tags($_POST['title'])))
 	{
 		Message::Send("error", "Could not create poule. Please try again.", "poules.php");
 	}
@@ -50,6 +50,8 @@ if(isset($_GET['delete']))
 
 					<input type="text" class="form-control" placeholder="Title" name="title">
 
+					<?php CSRF::Show(); ?>
+
 					<hr>
 
 					<input type="submit" class="btn btn-primary" value="Add" name="add">
@@ -85,7 +87,7 @@ if(isset($_GET['delete']))
 
 						    <tr>
 						      	<th scope="row"><?php echo $poule->id; ?></th>
-						      	<td><?php echo $poule->title; ?></td>
+						      	<td><?php echo htmlspecialchars($poule->title); ?></td>
 						      	<td><?php echo $poule->time; ?></td>
 						      	<td>
 						      		<a href="poule.php?id=<?php echo $poule->id; ?>"><button class="btn btn-primary">View</button></a>

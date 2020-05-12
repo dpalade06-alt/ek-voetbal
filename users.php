@@ -4,12 +4,17 @@ require('libraries/header.class.php');
 
 if(isset($_POST['add']) && isset($_POST['username']) && isset($_POST['password']))
 {
-	if(User::Exists($_POST['username']))
+	if(empty($_POST['username']))
+	{
+		Message::Send("error", "You must specify a username.", "users.php");
+	}
+
+	if(User::Exists(strip_tags($_POST['username'])))
 	{
 		Message::Send("error", "Username is already in use.", "users.php");
 	}
 
-	if(!User::Register($_POST['username'], $_POST['password']))
+	if(!User::Register(strip_tags($_POST['username']), $_POST['password']))
 	{
 		Message::Send("error", "Could not create account. Please try again.", "users.php");
 	}
@@ -55,6 +60,8 @@ if(isset($_GET['delete']))
 
 					<input type="text" class="form-control" placeholder="Username" name="username"><br>
 					<input type="password" class="form-control" placeholder="Password" name="password">
+
+					<?php CSRF::Show(); ?>
 
 					<hr>
 

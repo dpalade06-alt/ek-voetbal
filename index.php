@@ -24,6 +24,11 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 		Message::Send("error", "You have already bet on this poule.", "index.php");
 	}
 
+	if(!in_array($_POST['option_1'], $countries) || !in_array($_POST['option_2'], $countries) || !in_array($_POST['option_3'], $countries) || !in_array($_POST['option_4'], $countries))
+	{
+		Message::Send("error", "That country does not exist.", "index.php");
+	}
+
 	$data = array($_POST['option_1'], $_POST['option_2'], $_POST['option_3'], $_POST['option_4']);
 
 	if(count(array_keys($data, $_POST['option_1'])) > 1 || count(array_keys($data, $_POST['option_2'])) > 1 || count(array_keys($data, $_POST['option_3'])) > 1 || count(array_keys($data, $_POST['option_4'])) > 1)
@@ -50,7 +55,7 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 		<div class="card">
 		  	<div class="card-header">
-		    	<?php echo $poule->title; ?> - <a href="poule.php?id=<?php echo $poule->id; ?>">view</a>
+		    	<?php echo htmlentities($poule->title); ?> - <a href="poule.php?id=<?php echo $poule->id; ?>">view</a>
 		  	</div>
 		  	<div class="card-body">
 
@@ -155,6 +160,8 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 				    				<select name="option_4" class="dropdown form-control"></select>
 				    			</div>
 				    		</div>
+
+				    		<?php CSRF::Show(); ?>
 
 				    		<input type="hidden" name="poule_id" value="<?php echo $poule->id; ?>">
 

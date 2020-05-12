@@ -48,6 +48,8 @@ if(isset($_POST['save']) && isset($_POST['username']) && isset($_POST['password'
 					<input type="password" placeholder="Password" name="password" class="form-control"><br>
 					<input type="text" placeholder="Admin" name="admin" value="<?php echo $data->admin; ?>" class="form-control">
 
+					<?php CSRF::Show(); ?>
+
 					<hr>
 
 					<input type="submit" class="btn btn-primary" value="Save" name="save">

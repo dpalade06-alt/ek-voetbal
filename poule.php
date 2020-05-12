@@ -177,6 +177,8 @@ if(isset($_GET['unset']))
 			    			</div>
 			    		</div>
 
+			    		<?php CSRF::Show(); ?>
+
 			    		<hr>
 
 			    		<input type="submit" class="btn btn-primary" value="Save" name="save">
@@ -194,6 +196,9 @@ if(isset($_GET['unset']))
 						<h5>Add Users</h5>
 
 						<input type="text" placeholder="Username" name="username" class="form-control">
+
+						<?php CSRF::Show(); ?>
+
 						<hr>
 						<input type="submit" name="add" value="Add" class="btn btn-primary">
 
@@ -302,7 +307,7 @@ if(isset($_GET['unset']))
 		$.ajax({
 		    url: 'api.php',
 		    type: 'POST',
-		    data: jQuery.param({ user_id: id, poule_id: p_id }) ,
+		    data: jQuery.param({ user_id: id, poule_id: p_id, token: '<?php echo $_SESSION['token']; ?>' }) ,
 		    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 		    success: function (response) 
 		    {

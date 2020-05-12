@@ -67,6 +67,7 @@ class User {
 
 		$query = NULL;
 
+		//als er geen wachtwoord word opgegeven, sla alleen de overige details op.
 		if(empty($_POST['password']))
 		{
 			$query = $db->prepare("UPDATE `users` SET `username` = :username, `admin` = :admin WHERE `id` = :id");
@@ -144,10 +145,12 @@ class User {
 		if(!$query->rowCount())
 			return false;
 
+		//sla de username, wachtwoord en IP op in een sessie zodat we later kunnen checken of de user is ingelod.
 		$_SESSION['username'] = $username;
 		$_SESSION['password'] = $password;
 		$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
 
+		//haal de meest recente waardes op uit de database.
 		$user->data = $query->fetch(PDO::FETCH_OBJ);
 
 		return true;
@@ -175,6 +178,7 @@ class User {
 
 	public static function Logged()
 	{
+		//check of alle benodigde sessie variabele goed staan.
 		return (isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['ip']));
 	}
 

@@ -37,6 +37,8 @@ if(isset($_POST['login']) && isset($_POST['username']) && isset($_POST['password
 					<input type="text" placeholder="Username" name="username" class="form-control"><br>
 					<input type="password" placeholder="Password" name="password" class="form-control"><br>
 
+					<?php CSRF::Show(); ?>
+
 					<input type="submit" class="btn btn-primary" value="Login" name="login">
 
 				</form>

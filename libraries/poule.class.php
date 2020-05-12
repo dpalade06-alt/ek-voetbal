@@ -22,14 +22,18 @@ class Poule {
 
 		$total_points = 0;
 
+		//loop door alle resultaten. (user + admin)
 		foreach($r as $i => $res)
 		{
+			//als de gekozen opties van de user in de resultaten array staat, geef hem 1 punt.
 			if(in_array($res, $u))
 				$total_points ++;
 
+			//als de index niet bestaat, skippen
 			if(!isset($u[$i]) || $res != $u[$i])
 				continue;
 
+			//ieder index heeft zijn eigen punten telling.
 			switch($i)
 			{
 				case 0:
@@ -87,6 +91,7 @@ class Poule {
 		if(!$query->execute())
 			return NULL;
 
+		//explode de bet met de | delimiter en display de rows.
 		$data = explode("|", $query->fetch(PDO::FETCH_OBJ)->data);
 
 		foreach($data as $i => $d)
@@ -163,6 +168,7 @@ class Poule {
 
 		$poules = [];
 
+		//voeg alle poules van de user in de array en returneer die.
 		foreach($query->fetchAll(PDO::FETCH_OBJ) as $p)
 		{
 			$poules[] = Poule::Get($p->poule_id);
@@ -189,7 +195,6 @@ class Poule {
 
 		$query = $db->prepare("SELECT * FROM `user_poules` WHERE `poule_id` = :id");
 		$query->bindParam(":id", $poule_id);
-
 
 		if(!$query->execute())
 			return NULL;
