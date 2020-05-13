@@ -31,6 +31,7 @@ if(isset($_POST['save']) && isset($_POST['poule_id']) && isset($_POST['option_1'
 
 	$data = array($_POST['option_1'], $_POST['option_2'], $_POST['option_3'], $_POST['option_4']);
 
+	//check of een optie meerdere keren ingevuld is.
 	if(count(array_keys($data, $_POST['option_1'])) > 1 || count(array_keys($data, $_POST['option_2'])) > 1 || count(array_keys($data, $_POST['option_3'])) > 1 || count(array_keys($data, $_POST['option_4'])) > 1)
 	{
 		Message::Send("error", "You can't select the same team more than once.", "index.php");

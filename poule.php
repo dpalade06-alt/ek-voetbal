@@ -19,16 +19,16 @@ if(!Poule::HasUser($_GET['id'], $user->data->id) && !$user->data->admin)
 	Message::Send("error", "You were not invited to this poule.", "index.php");
 }
 
-if(isset($_POST['add']) && isset($_POST['username']) && $user->data->admin)
+if(isset($_GET['add']) && $user->data->admin)
 {
-	if(empty($_POST['username']))
+	if(empty($_GET['add']))
 	{
-		Message::Send("error", "You must specify a valid username.", "poule.php?id=".$_GET['id']);
+		Message::Send("error", "You must specify a valid user.", "poule.php?id=".$_GET['id']);
 	}
 
 	$u = NULL;
 
-	if(!$u = User::Exists($_POST['username']))
+	if(!$u = User::Get($_GET['add']))
 	{
 		Message::Send("error", "User does not exist.", "poule.php?id=".$_GET['id']);
 	}
@@ -164,7 +164,6 @@ if(isset($_GET['unset']) && $user->data->admin)
 
 ?>
 
-
 <div class="row">
 
 	<div class="col-md-4">
@@ -258,34 +257,63 @@ if(isset($_GET['unset']) && $user->data->admin)
 					Not available yet.
 
 				<?php } ?>
+			</div>
 
-				<?php if($user->data->admin) { ?>
+		</div>
 
-					<hr>
+		<?php if($user->data->admin) { ?>
 
-					<form method="POST">
+		<hr>
 
-						<h5>Add Users</h5>
+		<div class="card">
 
-						<input type="text" placeholder="Username" name="username" class="form-control">
+			<div class="card-header">Add Users</div>
+			<div class="card-body">
 
-						<?php CSRF::Show(); ?>
+				<table id="poule_add_users" class="table table-bordered">
+				  	<thead>
+					    <tr>
+					    	<th scope="col">ID</th>
+					      	<th scope="col">Username</th>
+					      	<th scope="col">Options</th>
+					    </tr>
+				  	</thead>
+				  	<tbody>
 
-						<hr>
-						<input type="submit" name="add" value="Add" class="btn btn-primary">
+				  		<?php foreach(User::GetAll() as $u) { ?>
 
-					</form>
+				  			<?php if(Poule::HasUser($_GET['id'], $u->id)) continue; ?>
 
-				<?php } ?>
+						    <tr>
+						    	<td><?php echo $u->id; ?></td>
+						      	<td><?php echo User::GetUsername($u->id); ?></td>
+						      	<td>
+
+						      		<a href="?id=<?php echo $_GET['id']; ?>&add=<?php echo $u->id; ?>"><button class="btn btn-primary">Add</button>
+
+
+						      	</td>
+						    </tr>
+
+				  		<?php } ?>
+
+				  	</tbody>
+				</table>
+
 
 			</div>
 
 		</div>
 
+		<?php } ?>
+
+		<br>
+
 
 	</div>
 
 	<div class="col-md">
+
 		<div class="card">
 
 			<div class="card-header">
@@ -303,7 +331,7 @@ if(isset($_GET['unset']) && $user->data->admin)
 					      	<th scope="col">Username</th>
 					      	<th scope="col">Points</th>
 					      	<th scope="col">Added Date</th>
-					      	<th scope="col">Edit</th>
+					      	<th scope="col">Options</th>
 					    </tr>
 				  	</thead>
 				  	<tbody>
@@ -346,6 +374,7 @@ if(isset($_GET['unset']) && $user->data->admin)
 			</div>
 
 		</div>
+
 	</div>
 
 </div>
@@ -370,7 +399,6 @@ if(isset($_GET['unset']) && $user->data->admin)
     </div>
   </div>
 </div>
-
 
 <script type="text/javascript">
 	

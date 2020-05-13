@@ -12,6 +12,7 @@ $(document).ready(function() {
 
     $('#users_table').DataTable();
     $("#poules_table").DataTable();
+    $("#poule_add_users").DataTable();
 
 });
 

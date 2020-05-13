@@ -44,9 +44,16 @@ if(isset($_POST['save']) && isset($_POST['username']) && isset($_POST['email']) 
 
 				<form method="POST">
 
+					Username:
 					<input type="text" placeholder="Username" name="username" value="<?php echo htmlentities($data->username); ?>" class="form-control"><br>
+					
+					E-Mail:
 					<input type="text" placeholder="E-mail" name="email" value="<?php echo htmlentities($data->email); ?>" class="form-control"><br>
+					
+					Password:
 					<input type="password" placeholder="Password" name="password" class="form-control"><br>
+					
+					Admin:
 					<input type="text" placeholder="Admin" name="admin" value="<?php echo $data->admin; ?>" class="form-control">
 
 					<?php CSRF::Show(); ?>
